@@ -15,15 +15,18 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+    // category management routes
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
+        Route::get('/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/', [\App\Http\Controllers\CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/{id}', [App\Http\Controllers\CategoryController::class, 'edit'])->name('categories.edit');
+        Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'delete'])->name('categories.delete');
+        Route::put('/{id}', [App\Http\Controllers\CategoryController::class, 'update'])->name('categories.update');
+    });
+});

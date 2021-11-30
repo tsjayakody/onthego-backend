@@ -22,9 +22,3 @@ mix.js("resources/js/app.js", "public/js")
 if (mix.inProduction()) {
     mix.version();
 }
-
-mix.browserSync({
-    proxy: "onthego-backend.test",
-    host: "onthego-backend.test",
-    open: "external",
-});
