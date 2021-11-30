@@ -9,25 +9,13 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Hoster extends Model implements HasMedia
+class Show extends Model implements HasMedia
 {
     use HasFactory;
     use HasSlug;
     use InteractsWithMedia;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'linkedin',
-        'facebook',
-        'instagram',
-        'youtube',
-        'slug',
-        'designation',
-        'is_approved',
-        'user_name',
-        'access_code'
-    ];
+    protected $fillable = ['name', 'slug', 'description', 'hoster_id'];
 
     /**
      * Get the options for generating the slug.
@@ -52,17 +40,17 @@ class Hoster extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('hoster-image-collection')
+            ->addMediaCollection('show-image-collection')
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg'])
             ->useFallbackUrl('/noimage.png')
             ->useFallbackPath(public_path('/noimage.png'))
             ->singleFile();
     }
 
-    protected $appends = ['hoster_image'];
+    protected $appends = ['show_image'];
 
     public function getCoverImageAttribute()
     {
-        return $this->getFirstMediaUrl('hoster-image-collection');
+        return $this->getFirstMediaUrl('show-image-collection');
     }
 }
