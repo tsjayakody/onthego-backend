@@ -49,7 +49,7 @@ class Show extends Model implements HasMedia
 
     protected $appends = ['show_image'];
 
-    public function getCoverImageAttribute()
+    public function getShowImageAttribute()
     {
         return $this->getFirstMediaUrl('show-image-collection');
     }

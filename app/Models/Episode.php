@@ -8,14 +8,17 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Category extends Model implements HasMedia
+class Episode extends Model implements HasMedia
 {
     use HasFactory;
     use HasSlug;
     use InteractsWithMedia;
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = [
+        'name', 'slug', 'description', 'media_url', 'tags', 'featured_hosts', 'is_featured', 'is_popular'
+    ];
 
     /**
      * Get the options for generating the slug.
@@ -40,30 +43,17 @@ class Category extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('cover-image-collection')
+            ->addMediaCollection('episode-image-collection')
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg'])
             ->useFallbackUrl('/noimage.png')
             ->useFallbackPath(public_path('/noimage.png'))
             ->singleFile();
     }
 
-    protected $appends = ['cover_image', 'episode_count'];
+    protected $appends = ['episode_image'];
 
-    // get cover image which is associate with the category
-    public function getCoverImageAttribute()
+    public function getEpisodeImageAttribute()
     {
-        return $this->getFirstMediaUrl('cover-image-collection');
-    }
-
-    // the episodes that belongs to the category
-    public function episodes()
-    {
-        return $this->belongsToMany(Episode::class, 'category_episode', 'category_id', 'episode_id');
-    }
-
-    // get the associated episodes count
-    public function getEpisodeCountAttribute()
-    {
-        return $this->episodes()->count();
+        return $this->getFirstMediaUrl('episode-image-collection', 'thumb');
     }
 }

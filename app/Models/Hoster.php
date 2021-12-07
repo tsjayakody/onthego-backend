@@ -8,6 +8,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Support\Facades\Hash;
 
 class Hoster extends Model implements HasMedia
 {
@@ -18,15 +19,17 @@ class Hoster extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
+        'email',
+        'contact_number',
         'linkedin',
         'facebook',
         'instagram',
         'youtube',
+        'anchor',
+        'past_works',
         'slug',
         'designation',
         'is_approved',
-        'user_name',
-        'access_code'
     ];
 
     /**
@@ -38,6 +41,16 @@ class Hoster extends Model implements HasMedia
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'past_works',
+        'anchor'
+    ];
 
     /**
      * Get the route key for the model.
@@ -61,7 +74,7 @@ class Hoster extends Model implements HasMedia
 
     protected $appends = ['hoster_image'];
 
-    public function getCoverImageAttribute()
+    public function getHosterImageAttribute()
     {
         return $this->getFirstMediaUrl('hoster-image-collection');
     }

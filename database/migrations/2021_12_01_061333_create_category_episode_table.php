@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShowsTable extends Migration
+class CreateCategoryEpisodeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateShowsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shows', function (Blueprint $table) {
+        Schema::create('category_episode', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->text('description');
-            $table->foreignId('hoster_id')->constrained('hosters', 'id')->onDelete('cascade');
-            $table->timestamps();
+            $table->foreignId('category_id')->constrained('categories', 'id')->onDelete('cascade');
+            $table->foreignId('episode_id')->constrained('episodes', 'id')->onDelete('cascade');
         });
     }
 
@@ -30,6 +27,6 @@ class CreateShowsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shows');
+        Schema::dropIfExists('category_episode');
     }
 }

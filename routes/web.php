@@ -29,4 +29,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'delete'])->name('categories.delete');
         Route::put('/{id}', [App\Http\Controllers\CategoryController::class, 'update'])->name('categories.update');
     });
+
+    // hosters management routes
+    Route::prefix('hosters')->group(function () {
+        Route::get('/', [App\Http\Controllers\HosterController::class, 'show'])->name('hosters.show');
+        Route::get('/create', [App\Http\Controllers\HosterController::class, 'create'])->name('hosters.create');
+        Route::post('/', [\App\Http\Controllers\HosterController::class, 'store'])->name('hosters.store');
+        Route::get('/{id}', [App\Http\Controllers\HosterController::class, 'edit'])->name('hosters.edit');
+        Route::delete('/{id}', [App\Http\Controllers\HosterController::class, 'delete'])->name('hosters.delete');
+        Route::put('/{id}', [App\Http\Controllers\HosterController::class, 'update'])->name('hosters.update');
+    });
 });

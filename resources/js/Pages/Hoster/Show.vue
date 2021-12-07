@@ -1,53 +1,63 @@
 <template>
-  <app-layout title="Manage Categories">
+  <app-layout title="Manage Hosters">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Manage Categories
+        Manage Hosters
       </h2>
     </template>
 
     <card>
       <template #header>
-        <Link :href="route('categories.create')">
+        <Link :href="route('hosters.create')">
           <jet-button :type="'button'">Create New</jet-button>
         </Link>
         <div class="w-1/2">
           <jet-input
-            id="categorySearch"
+            id="hosterSearch"
             placeholder="Search..."
             type="text"
             class="mt-1 block w-full"
             v-model="searchQuery"
-            autocomplete="categorySearch"
+            autocomplete="hosterSearch"
           />
         </div>
       </template>
+
       <template #content>
         <jet-table :columnNames="this.columnNames">
-          <template v-if="categories.data.length > 0">
-            <tr v-for="(category, key) in categories.data" :key="key">
+          <template v-if="hosters.data.length > 0">
+            <tr v-for="(hoster, key) in hosters.data" :key="key">
+              <!-- hoster image -->
               <jet-td>
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-10 w-10">
                     <img
                       class="h-10 w-10 rounded-sm"
-                      :src="category.cover_image"
-                      :alt="category.name"
+                      :src="hoster.hoster_image"
+                      :alt="hoster.name"
                     />
                   </div>
                 </div>
               </jet-td>
 
+              <!-- hoster name -->
               <jet-td>
-                <div class="text-sm text-gray-900">{{ category.name }}</div>
+                <div class="text-sm text-gray-900">{{ hoster.name }}</div>
               </jet-td>
 
+              <!-- hoster slug -->
               <jet-td>
-                <div class="text-sm text-gray-900">{{ category.slug }}</div>
+                <div class="text-sm text-gray-900">{{ hoster.slug }}</div>
               </jet-td>
 
+              <!-- hoster status -->
               <jet-td>
                 <span
+                  :class="
+                    hoster.is_approved
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  "
                   class="
                     px-2
                     inline-flex
@@ -55,56 +65,67 @@
                     leading-5
                     font-semibold
                     rounded-full
-                    bg-green-100
-                    text-green-800
                   "
                 >
-                  {{ category.episode_count }}
+                  {{ hoster.is_approved ? "✓" : "✗" }}
                 </span>
               </jet-td>
 
+              <!-- hoster email -->
+              <jet-td>
+                <div class="text-sm text-gray-900">{{ hoster.email }}</div>
+              </jet-td>
+
+              <!-- hoster contact number -->
+              <jet-td>
+                <div class="text-sm text-gray-900">
+                  {{ hoster.contact_number }}
+                </div>
+              </jet-td>
+
+              <!-- hoster action buttons -->
               <jet-td class="text-right font-medium">
-                <Link :href="route('categories.edit', { id: category.id })"
-                  ><jet-button class="mr-4">Edit</jet-button></Link
-                >
-                <jet-button @click="categoryIdBeginDeleted = category.id"
-                  >Delete</jet-button
-                >
+                <!-- <jet-button class="mr-4">View</jet-button> -->
+                <Link :href="route('hosters.edit', { id: hoster.id })">
+                  <jet-button class="mr-4">Edit</jet-button>
+                </Link>
+                <jet-button @click="hosterIdBeginDeleted = hoster.id">
+                  Delete
+                </jet-button>
               </jet-td>
             </tr>
           </template>
         </jet-table>
-
         <pagination
-          v-if="categories.data.length > 0"
-          :from="categories.from"
-          :to="categories.to"
-          :total="categories.total"
-          :links="categories.links"
+          v-if="hosters.data.length > 0"
+          :from="hosters.from"
+          :to="hosters.to"
+          :total="hosters.total"
+          :links="hosters.links"
         ></pagination>
       </template>
     </card>
   </app-layout>
-  <jet-confirmation-modal
-    :show="categoryIdBeginDeleted"
-    @close="categoryIdBeginDeleted = null"
+    <jet-confirmation-modal
+    :show="hosterIdBeginDeleted"
+    @close="hosterIdBeginDeleted = null"
   >
-    <template #title> Delete Category </template>
+    <template #title> Delete Hoster </template>
 
     <template #content>
-      Are you sure you would like to delete this category?
+      Are you sure you would like to delete this hoster?
     </template>
 
     <template #footer>
-      <jet-secondary-button @click="categoryIdBeginDeleted = null">
+      <jet-secondary-button @click="hosterIdBeginDeleted = null">
         Cancel
       </jet-secondary-button>
 
       <jet-danger-button
         class="ml-2"
-        @click="deleteCategory"
-        :class="{ 'opacity-25': deleteCategoryForm.processing }"
-        :disabled="deleteCategoryForm.processing"
+        @click="deleteHoster"
+        :class="{ 'opacity-25': deleteHosterForm.processing }"
+        :disabled="deleteHosterForm.processing"
       >
         Delete
       </jet-danger-button>
@@ -133,7 +154,6 @@ import JetConfirmationModal from "@/Jetstream/ConfirmationModal.vue";
 
 export default defineComponent({
   components: {
-    Inertia,
     Pagination,
     JetTable,
     JetTd,
@@ -149,20 +169,23 @@ export default defineComponent({
     Link,
     JetConfirmationModal,
     JetDangerButton,
+    Inertia,
   },
-
-  props: ["categories", "filters"],
-
+  props: ["hosters", "filters"],
   data() {
     return {
-      form: this.$inertia.form({
-        _method: "POST",
-        name: null,
-      }),
       searchQuery: this.filters.search,
-      columnNames: ["Image", "Name", "Slug", "Episodes", ""],
-      deleteCategoryForm: this.$inertia.form(),
-      categoryIdBeginDeleted: null,
+      hosterIdBeginDeleted: null,
+      deleteHosterForm: this.$inertia.form(),
+      columnNames: [
+        "Image",
+        "Name",
+        "Slug",
+        "Status",
+        "Email",
+        "Contact Number",
+        "",
+      ],
     };
   },
 
@@ -175,18 +198,18 @@ export default defineComponent({
   methods: {
     getAllRecords: _.debounce((val) => {
       Inertia.get(
-        route("categories.show"),
+        route("hosters.show"),
         { search: val },
         { preserveState: true }
       );
     }, 200),
-    deleteCategory() {
-      this.deleteCategoryForm.delete(
-        route("categories.delete", this.categoryIdBeginDeleted),
+    deleteHoster() {
+      this.deleteHosterForm.delete(
+        route("hosters.delete", this.hosterIdBeginDeleted),
         {
           preserveScroll: true,
           preserveState: true,
-          onSuccess: () => (this.categoryIdBeginDeleted = null),
+          onSuccess: () => (this.hosterIdBeginDeleted = null),
         }
       );
     },

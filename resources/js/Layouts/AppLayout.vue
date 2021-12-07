@@ -31,6 +31,12 @@
                 >
                   Categories
                 </jet-nav-link>
+                <jet-nav-link
+                  :href="route('hosters.show')"
+                  :active="route().current('hosters.show')"
+                >
+                  Hosters
+                </jet-nav-link>
               </div>
             </div>
 
@@ -193,6 +199,12 @@
               :active="route().current('categories.show')"
             >
               Categories
+            </jet-responsive-nav-link>
+            <jet-responsive-nav-link
+              :href="route('hosters.show')"
+              :active="route().current('hosters.show')"
+            >
+              Hosters
             </jet-responsive-nav-link>
           </div>
 
