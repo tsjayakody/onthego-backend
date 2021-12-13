@@ -8,7 +8,6 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Support\Facades\Hash;
 
 class Hoster extends Model implements HasMedia
 {
@@ -23,6 +22,7 @@ class Hoster extends Model implements HasMedia
         'contact_number',
         'linkedin',
         'facebook',
+        'twitter',
         'instagram',
         'youtube',
         'anchor',
@@ -49,7 +49,9 @@ class Hoster extends Model implements HasMedia
      */
     protected $hidden = [
         'past_works',
-        'anchor'
+        'anchor',
+        'contact_number',
+        'email'
     ];
 
     /**
@@ -78,4 +80,8 @@ class Hoster extends Model implements HasMedia
     {
         return $this->getFirstMediaUrl('hoster-image-collection');
     }
+
+    protected $casts = [
+        'is_approved' => 'boolean',
+    ];
 }

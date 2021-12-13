@@ -71,18 +71,6 @@
                 </span>
               </jet-td>
 
-              <!-- hoster email -->
-              <jet-td>
-                <div class="text-sm text-gray-900">{{ hoster.email }}</div>
-              </jet-td>
-
-              <!-- hoster contact number -->
-              <jet-td>
-                <div class="text-sm text-gray-900">
-                  {{ hoster.contact_number }}
-                </div>
-              </jet-td>
-
               <!-- hoster action buttons -->
               <jet-td class="text-right font-medium">
                 <!-- <jet-button class="mr-4">View</jet-button> -->
@@ -182,8 +170,6 @@ export default defineComponent({
         "Name",
         "Slug",
         "Status",
-        "Email",
-        "Contact Number",
         "",
       ],
     };

@@ -16,6 +16,7 @@ class CategoryController extends Controller
             ->when($request->input('search'), function ($query, $search) {
                 return $query->where('name', 'like', '%' . $search . '%');
             })
+            ->orderBy('name', 'asc')
             ->paginate(8)
             ->withQueryString();
 
@@ -64,12 +65,11 @@ class CategoryController extends Controller
     // update category by id
     public function update(Request $request, $id)
     {
+        $category = Category::findOrFail($id);
         $validatedData = $request->validateWithBag('createOrUpdateCategory', [
             'name' => ['required', 'min:2', 'max:50'],
             'photo' => ['mimes:jpg,jpeg,png', 'max:1024'],
         ]);
-
-        $category = Category::findOrFail($id);
 
         $category->name = $validatedData['name'];
 

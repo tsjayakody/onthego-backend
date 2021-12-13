@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Hoster;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
 
@@ -25,16 +24,13 @@ class HosterController extends Controller
                     ->orWhere('contact_number', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
-            ->when($request->input('approved'), function ($query, $approved) {
-                return $query->where('is_approved', $approved);
-            })
             ->orderBy('created_at', 'desc')
             ->paginate(8)
             ->withQueryString();
 
         return Inertia::render('Hoster/Show', [
             'hosters' => $hosters,
-            'filters' => $request->only(['search', 'is_approved']),
+            'filters' => $request->only(['search']),
         ]);
     }
 
@@ -87,7 +83,7 @@ class HosterController extends Controller
     // show edit hoster form with requested hoster data
     public function edit(Request $request, $id)
     {
-        $hoster = Hoster::findOrFail($id)->makeVisible(['past_works', 'anchor']);
+        $hoster = Hoster::findOrFail($id)->makeVisible(['past_works', 'anchor', 'contact_number', 'email']);
         return Inertia::render('Hoster/CreateUpdate', ['hoster' => $hoster]);
     }
 

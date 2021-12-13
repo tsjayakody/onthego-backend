@@ -1,23 +1,21 @@
 <template>
-  <app-layout title="Manage Categories">
+  <app-layout title="Manage Shows">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Manage Categories
+        Manage Shows
       </h2>
     </template>
 
     <div>
       <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-        <jet-form-section @submitted="createOrUpdateCategory">
+        <jet-form-section @submitted="createUpdateShow">
           <template #title>
-            {{
-              category == undefined ? "Create new category" : "Edit category"
-            }}
+            {{ show == undefined ? "Create new show" : "Edit show" }}
           </template>
 
           <template #description>
             <ul>
-              <li>• Create or Update the category.</li>
+              <li>• Create or Update the show.</li>
               <li>• Image accept ratio should be 1:1.</li>
               <li>• Image formt should be .png, .jpg or .jpeg</li>
             </ul>
@@ -38,16 +36,27 @@
             </div>
 
             <!-- Slug -->
-            <div class="col-span-6 sm:col-span-4" v-if="category">
-              <jet-label for="slug" value="slug" />
+            <div class="col-span-6 sm:col-span-4" v-if="show">
+              <jet-label for="slug" value="Slug" />
               <jet-input
                 id="slug"
                 type="text"
                 class="mt-1 block w-full"
-                :value="category.slug"
+                :value="show.slug"
                 autocomplete="slug"
                 disabled
               />
+            </div>
+
+            <!-- hoster -->
+
+            <div class="col-span-6 sm:col-span-4">
+              <jet-label for="hoster" value="Hoster" />
+              <selected-hoster
+                :hosterId="form.hoster_id"
+                @click="isOpenHosterSelector = true"
+              ></selected-hoster>
+              <jet-input-error :message="form.errors.hoster_id" class="mt-2" />
             </div>
 
             <!-- category cover image -->
@@ -65,7 +74,7 @@
               <!-- Current Profile Photo -->
               <div class="mt-2" v-show="!photoPreview">
                 <img
-                  :src="category ? category.cover_image : '/noimage.png'"
+                  :src="show ? show.show_image : '/noimage.png'"
                   :alt="form.name"
                   class="rounded-sm object-cover"
                   style="width: 150px; height: 150px"
@@ -92,6 +101,25 @@
 
               <jet-input-error :message="form.errors.photo" class="mt-2" />
             </div>
+
+            <!-- description -->
+            <div class="col-span-6 sm:col-span-4">
+              <jet-label for="description" value="Description" />
+              <jet-text-area
+                id="description"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="form.description"
+                autocomplete="description"
+                cols="5"
+                rows="10"
+              />
+
+              <jet-input-error
+                :message="form.errors.description"
+                class="mt-2"
+              />
+            </div>
           </template>
 
           <template #actions>
@@ -106,7 +134,7 @@
               Save
             </jet-button>
 
-            <Link :href="route('categories.show')" class="ml-4">
+            <Link :href="route('shows.show')" class="ml-4">
               <jet-secondary-button :type="'button'"
                 >Cancel</jet-secondary-button
               >
@@ -116,6 +144,11 @@
       </div>
     </div>
   </app-layout>
+  <hoster-select-modal
+    :show="isOpenHosterSelector"
+    @update:hoster-changed="onHosterChanged"
+    @close="isOpenHosterSelector = false"
+  ></hoster-select-modal>
 </template>
 
 <script>
@@ -124,11 +157,16 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetFormSection from "@/Jetstream/FormSection.vue";
 import JetInput from "@/Jetstream/Input.vue";
+import JetTextArea from "@/Jetstream/InputArea.vue";
 import JetInputError from "@/Jetstream/InputError.vue";
 import JetLabel from "@/Jetstream/Label.vue";
 import JetActionMessage from "@/Jetstream/ActionMessage.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
+import HosterSelectModal from "@/jetstream/HosterSelect.vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
+import { throttle } from "lodash";
+import SelectedHoster from "@/Jetstream/SelectedHoster.vue";
 
 export default defineComponent({
   components: {
@@ -141,25 +179,46 @@ export default defineComponent({
     JetLabel,
     JetSecondaryButton,
     Link,
+    JetTextArea,
+    SelectedHoster,
+    HosterSelectModal,
   },
-  props: ["category"],
-  setup() {},
+  props: {
+    show: {
+      type: Object,
+      default: undefined,
+    },
+    hosters: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       form: this.$inertia.form({
-        name: this.category === undefined ? "" : this.category.name,
+        name: "",
+        description: "",
+        hoster_id: null,
         photo: null,
       }),
       photoPreview: null,
+      isOpenHosterSelector: false,
     };
   },
+  mounted() {
+    if (this.show) {
+      this.form.name = this.show.name;
+      this.form.description = this.show.description;
+      this.form.hoster_id = this.show.hoster_id;
+    }
+  },
   methods: {
-    createOrUpdateCategory() {
-      if (this.category === undefined) {
+    createUpdateShow() {
+      if (this.show === undefined) {
         if (this.$refs.photo) {
           this.form.photo = this.$refs.photo.files[0];
-          this.form.post(route("categories.store"), {
-            errorBag: "createOrUpdateCategory",
+          this.form.post(route("shows.store"), {
+            errorBag: "createUpdateShow",
             preserveScroll: true,
           });
         }
@@ -170,8 +229,8 @@ export default defineComponent({
           delete this.form.photo;
         }
 
-        this.form.post(route("categories.update", { id: this.category.id }), {
-          errorBag: "createOrUpdateCategory",
+        this.form.post(route("shows.update", { id: this.show.id }), {
+          errorBag: "createUpdateShow",
           preserveScroll: true,
         });
       }
@@ -197,6 +256,9 @@ export default defineComponent({
       if (this.$refs.photo?.value) {
         this.$refs.photo.value = null;
       }
+    },
+    onHosterChanged(id) {
+      this.form.hoster_id = id;
     },
   },
 });

@@ -27,15 +27,21 @@
                 </jet-nav-link>
                 <jet-nav-link
                   :href="route('categories.show')"
-                  :active="route().current('categories.show')"
+                  :active="route().current('categories.show') || route().current('categories.edit') || route().current('categories.create')"
                 >
                   Categories
                 </jet-nav-link>
                 <jet-nav-link
                   :href="route('hosters.show')"
-                  :active="route().current('hosters.show')"
+                  :active="route().current('hosters.show') || route().current('hosters.edit') || route().current('hosters.create')"
                 >
                   Hosters
+                </jet-nav-link>
+                <jet-nav-link
+                  :href="route('shows.show')"
+                  :active="route().current('shows.show') || route().current('shows.edit') || route().current('shows.create')"
+                >
+                  Shows
                 </jet-nav-link>
               </div>
             </div>
@@ -196,15 +202,21 @@
             </jet-responsive-nav-link>
             <jet-responsive-nav-link
               :href="route('categories.show')"
-              :active="route().current('categories.show')"
+              :active="route().current('categories.show') || route().current('categories.edit') || route().current('categories.create')"
             >
               Categories
             </jet-responsive-nav-link>
             <jet-responsive-nav-link
               :href="route('hosters.show')"
-              :active="route().current('hosters.show')"
+              :active="route().current('hosters.show') || route().current('hosters.edit') || route().current('hosters.create')"
             >
               Hosters
+            </jet-responsive-nav-link>
+            <jet-responsive-nav-link
+              :href="route('shows.show')"
+              :active="route().current('shows.show') || route().current('shows.edit') || route().current('shows.create')"
+            >
+              Shows
             </jet-responsive-nav-link>
           </div>
 

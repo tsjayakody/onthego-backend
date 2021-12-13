@@ -350,8 +350,7 @@ export default defineComponent({
         } else {
             delete(this.form.photo);
         }
-
-        this.form.put(route("hosters.update", { id: this.hoster.id }), {
+        this.form.post(route("hosters.update", { id: this.hoster.id }), {
           errorBag: "createUpdateHoster",
           preserveScroll: true,
         });
@@ -364,15 +363,11 @@ export default defineComponent({
 
     updatePhotoPreview() {
       const photo = this.$refs.photo.files[0];
-
       if (!photo) return;
-
       const reader = new FileReader();
-
       reader.onload = (e) => {
         this.photoPreview = e.target.result;
       };
-
       reader.readAsDataURL(photo);
     },
 

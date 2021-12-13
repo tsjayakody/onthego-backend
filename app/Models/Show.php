@@ -8,6 +8,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\Hoster;
 
 class Show extends Model implements HasMedia
 {
@@ -52,5 +53,10 @@ class Show extends Model implements HasMedia
     public function getShowImageAttribute()
     {
         return $this->getFirstMediaUrl('show-image-collection');
+    }
+
+    public function hoster()
+    {
+        return $this->belongsTo(Hoster::class);
     }
 }

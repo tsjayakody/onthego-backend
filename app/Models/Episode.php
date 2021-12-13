@@ -47,7 +47,13 @@ class Episode extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg'])
             ->useFallbackUrl('/noimage.png')
             ->useFallbackPath(public_path('/noimage.png'))
-            ->singleFile();
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
+            });
     }
 
     protected $appends = ['episode_image'];
@@ -55,5 +61,9 @@ class Episode extends Model implements HasMedia
     public function getEpisodeImageAttribute()
     {
         return $this->getFirstMediaUrl('episode-image-collection', 'thumb');
+    }
+
+    public function categories() {
+        return $this->belongsToMany(Category::class, 'category_episode');
     }
 }
