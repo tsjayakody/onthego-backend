@@ -12,7 +12,7 @@ class HosterController extends Controller
     {
         $hosters = Hoster::query()->when($request->input('term'), function($query, $term) {
             return $query->where('name', 'like', '%'.$term.'%');
-        })->limit(10)->orderBy('name', 'asc')->get();
+        })->where('is_approved', true)->limit(10)->orderBy('name', 'asc')->get();
 
         return response($hosters);
     }

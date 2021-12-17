@@ -29,6 +29,9 @@
         "vue-loader": "^16.1.2"
     },
     "dependencies": {
-        "@heroicons/vue": "^1.0.5"
+        "@heroicons/vue": "^1.0.5",
+        "@sipec/vue3-tags-input": "^3.0.4",
+        "@vueform/multiselect": "^2.2.1",
+        "@vueform/toggle": "^2.0.1"
     }
 }

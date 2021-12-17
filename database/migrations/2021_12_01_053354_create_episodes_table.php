@@ -20,6 +20,9 @@ class CreateEpisodesTable extends Migration
             $table->text('description');
             $table->string('media_url');
             $table->string('tags')->nullable();
+            $table->string('spotify')->nullable();
+            $table->string('google_podcast')->nullable();
+            $table->string('apple_podcast')->nullable();
             $table->string('featured_hosts')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_popular')->default(false);

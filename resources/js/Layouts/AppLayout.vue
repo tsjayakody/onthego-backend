@@ -43,6 +43,12 @@
                 >
                   Shows
                 </jet-nav-link>
+                <jet-nav-link
+                  :href="route('episodes.show')"
+                  :active="route().current('episodes.show') || route().current('episodes.edit') || route().current('episodes.create')"
+                >
+                  Episodes
+                </jet-nav-link>
               </div>
             </div>
 
@@ -217,6 +223,12 @@
               :active="route().current('shows.show') || route().current('shows.edit') || route().current('shows.create')"
             >
               Shows
+            </jet-responsive-nav-link>
+            <jet-responsive-nav-link
+              :href="route('episodes.show')"
+              :active="route().current('episodes.show') || route().current('episodes.edit') || route().current('episodes.create')"
+            >
+              Episodes
             </jet-responsive-nav-link>
           </div>
 

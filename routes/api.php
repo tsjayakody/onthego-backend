@@ -20,3 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('hosters', [App\Http\Controllers\api\HosterController::class, 'index']);
 Route::get('hosters/{id}', [App\Http\Controllers\api\HosterController::class, 'getById']);
+
+Route::get('shows', [App\Http\Controllers\api\ShowController::class, 'index']);
+Route::get('shows/{id}', [App\Http\Controllers\api\ShowController::class, 'getById']);

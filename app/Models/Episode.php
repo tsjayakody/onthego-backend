@@ -17,7 +17,7 @@ class Episode extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
-        'name', 'slug', 'description', 'media_url', 'tags', 'featured_hosts', 'is_featured', 'is_popular'
+        'name', 'slug', 'description', 'media_url', 'tags', 'featured_hosts', 'is_featured', 'is_popular', 'show_id'
     ];
 
     /**
@@ -56,14 +56,43 @@ class Episode extends Model implements HasMedia
             });
     }
 
-    protected $appends = ['episode_image'];
+    protected $appends = ['episode_image', 'episode_image_thumb'];
 
     public function getEpisodeImageAttribute()
+    {
+        return $this->getFirstMediaUrl('episode-image-collection');
+    }
+
+    public function getEpisodeImageThumbAttribute()
     {
         return $this->getFirstMediaUrl('episode-image-collection', 'thumb');
     }
 
+    public function getTagsAttribute($value)
+    {
+        return unserialize($value);
+    }
+
+    public function setTagsAttribute($value)
+    {
+        $this->attributes['tags'] = serialize($value);
+    }
+
+    public function getFeaturedHostsAttribute($value)
+    {
+        return unserialize($value);
+    }
+
+    public function setFeaturedHostsAttribute($value)
+    {
+        $this->attributes['featured_hosts'] = serialize($value);
+    }
+
     public function categories() {
         return $this->belongsToMany(Category::class, 'category_episode');
+    }
+
+    public function show() {
+        return $this->belongsTo(Show::class, 'show_id');
     }
 }
