@@ -58,4 +58,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('/{id}', [App\Http\Controllers\EpisodeController::class, 'delete'])->name('episodes.delete');
         Route::post('/{id}', [App\Http\Controllers\EpisodeController::class, 'update'])->name('episodes.update');
     });
+
+    // slider images management routes
+    Route::prefix('slider_images')->group(function () {
+        Route::get('/', [App\Http\Controllers\SliderItemController::class, 'show'])->name('sliderImages.show');
+        Route::get('/create', [App\Http\Controllers\SliderItemController::class, 'create'])->name('sliderImages.create');
+        Route::post('/', [App\Http\Controllers\SliderItemController::class, 'store'])->name('sliderImages.store');
+        Route::get('/{id}', [App\Http\Controllers\SliderItemController::class, 'edit'])->name('sliderImages.edit');
+        Route::delete('/{id}', [App\Http\Controllers\SliderItemController::class, 'delete'])->name('sliderImages.delete');
+        Route::post('/{id}', [App\Http\Controllers\SliderItemController::class, 'update'])->name('sliderImages.update');
+
+    });
+    Route::post('/change_order', [App\Http\Controllers\SliderItemController::class, 'changeOrder'])->name('sliderImages.changeOrder');
 });

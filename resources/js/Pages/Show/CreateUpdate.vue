@@ -164,8 +164,6 @@ import JetActionMessage from "@/Jetstream/ActionMessage.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
 import HosterSelectModal from "@/jetstream/HosterSelect.vue";
 import { Link } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
-import { throttle } from "lodash";
 import SelectedHoster from "@/Jetstream/SelectedHoster.vue";
 
 export default defineComponent({

@@ -49,6 +49,12 @@
                 >
                   Episodes
                 </jet-nav-link>
+                <jet-nav-link
+                  :href="route('sliderImages.show')"
+                  :active="route().current('sliderImages.show') || route().current('sliderImages.edit') || route().current('sliderImages.create')"
+                >
+                  Main Slider
+                </jet-nav-link>
               </div>
             </div>
 
@@ -229,6 +235,12 @@
               :active="route().current('episodes.show') || route().current('episodes.edit') || route().current('episodes.create')"
             >
               Episodes
+            </jet-responsive-nav-link>
+            <jet-responsive-nav-link
+              :href="route('sliderImages.show')"
+              :active="route().current('sliderImages.show') || route().current('sliderImages.edit') || route().current('sliderImages.create')"
+            >
+              Main Slider
             </jet-responsive-nav-link>
           </div>
 
