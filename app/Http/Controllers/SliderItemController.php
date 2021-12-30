@@ -47,7 +47,7 @@ class SliderItemController extends Controller
             $sliderItem->order_index = $maxOrderIndex + 1;
         }
 
-        $sliderItem = SliderItem::create($validatedData);
+        $sliderItem->save();
 
         $sliderItem->addMedia($request->file('photo'))->toMediaCollection('slider-image-collection');
         return redirect(route('sliderImages.show'));
@@ -81,7 +81,7 @@ class SliderItemController extends Controller
     }
 
     // delete the slider item
-    public function destroy(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $sliderItem = SliderItem::findOrFail($id);
         $sliderItem->delete();
@@ -92,18 +92,16 @@ class SliderItemController extends Controller
     public function changeOrder(Request $request)
     {
         DB::transaction(function () use ($request) {
-            $sliderItem = SliderItem::findOrFail($request->input('id'));
-            if ($request->input('direction') == 'up') {
-                if (SliderItem::min('order_index') < $sliderItem->order_index) {
-                    dd($sliderItem->order_index - 1);
+            $sliderItem = SliderItem::findOrFail($request->input('id')); // get the slider item from id
+            if ($request->input('direction') == 'up') { // if item moves up
+                if (SliderItem::min('order_index') < $sliderItem->order_index) { // if item not in the highest position
                     SliderItem::where('order_index', $sliderItem->order_index - 1)->update(['order_index' => DB::raw('order_index + 1')]);
-                    $sliderItem->order_index = $sliderItem->order_index + 1;
+                    $sliderItem->order_index = $sliderItem->order_index - 1;
                 }
             } else {
-                if (SliderItem::max('order_index') > $sliderItem->order_index) {
-                    dd($sliderItem->order_index + 1);
+                if (SliderItem::max('order_index') > $sliderItem->order_index) { // if item not in the lowest position
                     SliderItem::where('order_index', $sliderItem->order_index + 1)->update(['order_index' => DB::raw('order_index - 1')]);
-                    $sliderItem->order_index = $sliderItem->order_index - 1;
+                    $sliderItem->order_index = $sliderItem->order_index + 1;
                 }
             }
             $sliderItem->save();

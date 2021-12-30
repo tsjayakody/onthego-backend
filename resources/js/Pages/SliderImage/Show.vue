@@ -76,6 +76,31 @@
       </template>
     </card>
   </app-layout>
+  <jet-confirmation-modal
+    :show="imageIdBeginDeleted"
+    @close="imageIdBeginDeleted = null"
+  >
+    <template #title> Delete Slider Image </template>
+
+    <template #content>
+      Are you sure you would like to delete this image?
+    </template>
+
+    <template #footer>
+      <jet-secondary-button @click="imageIdBeginDeleted = null">
+        Cancel
+      </jet-secondary-button>
+
+      <jet-danger-button
+        class="ml-2"
+        @click="deleteImage"
+        :class="{ 'opacity-25': deleteImageForm.processing }"
+        :disabled="deleteImageForm.processing"
+      >
+        Delete
+      </jet-danger-button>
+    </template>
+  </jet-confirmation-modal>
 </template>
 
 <script>
@@ -127,6 +152,16 @@ export default defineComponent({
           direction: orderDirection,
         })
         .post(route("sliderImages.changeOrder"));
+    },
+    deleteImage() {
+      this.deleteImageForm.delete(
+        route("sliderImages.delete", this.imageIdBeginDeleted),
+        {
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: () => (this.imageIdBeginDeleted = null),
+        }
+      );
     },
   },
 });
