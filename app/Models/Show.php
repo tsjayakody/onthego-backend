@@ -59,4 +59,9 @@ class Show extends Model implements HasMedia
     {
         return $this->belongsTo(Hoster::class);
     }
+
+    public function episodes()
+    {
+        return $this->hasMany(Episode::class);
+    }
 }

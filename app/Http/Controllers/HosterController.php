@@ -46,7 +46,7 @@ class HosterController extends Controller
         $validatedData = $request->validateWithBag('createUpdateHoster', [
             'name' => ['required', 'min:2', 'max:50'],
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'email' => ['email:rfc,dns', 'required', 'unique:hosters,email'],
+            'email' => ['email', 'required', 'unique:hosters,email'],
             'contact_number' => ['required', 'digits:10', 'unique:hosters,contact_number'],
             'description' => ['required', 'min:50', 'string'],
             'linkedin' => ['nullable', 'url', 'unique:hosters,linkedin'],
@@ -101,7 +101,7 @@ class HosterController extends Controller
         $validatedData = $request->validateWithBag('createUpdateHoster', [
             'name' => ['required', 'min:2', 'max:50'],
             'photo' => ['mimes:jpg,jpeg,png', 'max:1024'],
-            'email' => ['email:rfc,dns', 'required', Rule::unique('hosters')->ignore($hoster->id)],
+            'email' => ['email', 'required', Rule::unique('hosters')->ignore($hoster->id)],
             'contact_number' => ['required', 'digits:10', Rule::unique('hosters')->ignore($hoster->id)],
             'description' => ['required', 'min:50'],
             'linkedin' => ['nullable', 'url', Rule::unique('hosters')->ignore($hoster->id)],
