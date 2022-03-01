@@ -50,6 +50,10 @@ Route::middleware(['throttle:api'])->prefix('public/v1/')->group(function () {
     Route::prefix('episodes')->group(function () {
         Route::get('/', [App\Http\Controllers\api\public\EpisodeController::class, 'index']);
         Route::get('/popular', [App\Http\Controllers\api\public\EpisodeController::class, 'getPopularEpisodes']);
+        Route::get('/featured', [App\Http\Controllers\api\public\EpisodeController::class, 'getFeaturedEpisodes']);
         Route::get('/{slug}', [App\Http\Controllers\api\public\EpisodeController::class, 'getBySlug']);
     });
+
+    // public api route for get all slider items
+    Route::get('slider', [App\Http\Controllers\api\public\GeneralController::class, 'getAllSliderItems']);
 });

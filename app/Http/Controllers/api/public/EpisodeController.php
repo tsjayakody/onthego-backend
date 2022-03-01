@@ -15,7 +15,13 @@ class EpisodeController extends Controller
         $page = $request->input('page', 1);
         $episodes = Episode::query()->when($request->input('term'), function ($query, $term) {
             return $query->where('name', 'like', '%' . $term . '%');
-        })->with('show')->paginate($itemsPerPage, ['*'], 'page', $page);
+        })
+        ->when($request->input('latest'), function ($query, $latest) {
+            if ($latest == 'true') {
+                return $query->orderBy('created_at', 'desc');
+            }
+        })
+        ->with('show')->paginate($itemsPerPage, ['*'], 'page', $page);
 
         return response($episodes);
     }
@@ -34,6 +40,16 @@ class EpisodeController extends Controller
         $itemsPerPage = $request->input('itemsPerPage', 10);
         $page = $request->input('page', 1);
         $episodes = Episode::query()->where('is_popular', 1)->with('show')->paginate($itemsPerPage, ['*'], 'page', $page);
+
+        return response($episodes);
+    }
+
+    // return featured episodes with pagination
+    public function getFeaturedEpisodes(Request $request)
+    {
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+        $page = $request->input('page', 1);
+        $episodes = Episode::query()->where('is_featured', 1)->with('show')->orderBy('created_at', 'desc')->paginate($itemsPerPage, ['*'], 'page', $page);
 
         return response($episodes);
     }

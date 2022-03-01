@@ -16,7 +16,7 @@ class HosterController extends Controller
         $page = $request->input('page', 1);
         $hosters = Hoster::query()->when($request->input('term'), function($query, $term) {
             return $query->where('name', 'like', '%'.$term.'%');
-        })->where('is_approved', true)->paginate($itemsPerPage, ['*'], 'page', $page);
+        })->where('is_approved', true)->orderBy('created_at', 'desc')->paginate($itemsPerPage, ['*'], 'page', $page);
 
         return response($hosters);
     }

@@ -16,7 +16,7 @@ class ShowController extends Controller
         $page = $request->input('page', 1);
         $shows = Show::query()->when($request->input('term'), function($query, $term) {
             return $query->where('name', 'like', '%'.$term.'%');
-        })->paginate($itemsPerPage, ['*'], 'page', $page);
+        })->orderBy('name', 'asc')->paginate($itemsPerPage, ['*'], 'page', $page);
 
         return response($shows);
     }
@@ -34,7 +34,7 @@ class ShowController extends Controller
     {
         $itemsPerPage = $request->input('itemsPerPage', 10);
         $page = $request->input('page', 1);
-        $episodes = Show::query()->where('slug', $slug)->firstOrFail()->episodes()->paginate($itemsPerPage, ['*'], 'page', $page);
+        $episodes = Show::query()->where('slug', $slug)->firstOrFail()->episodes()->orderBy('created_at', 'desc')->paginate($itemsPerPage, ['*'], 'page', $page);
 
         return response($episodes);
     }
