@@ -17,7 +17,7 @@ class Episode extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
-        'name', 'slug', 'description', 'media_url', 'tags', 'featured_hosts', 'is_featured', 'is_popular', 'show_id'
+        'name', 'slug', 'description', 'media_url', 'tags', 'featured_hosts', 'is_featured', 'is_popular', 'show_id', 'spotify', 'google_podcast', 'apple_podcast',
     ];
 
     /**

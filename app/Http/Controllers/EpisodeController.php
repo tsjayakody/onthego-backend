@@ -40,20 +40,21 @@ class EpisodeController extends Controller
     // create new episode
     public function store(Request $request) {
         $validatedData = $request->validateWithBag('createUpdateEpisode', [
-            'name' => ['required', 'min:2', 'max:50'],
+            'name' => ['required', 'min:2', 'max:255'],
             'description' => ['required', 'min:50', 'string'],
             'media_url' => ['required', 'url'],
-            'spotify' => ['url'],
-            'google_podcast' => ['url'],
-            'apple_podcast' => ['url'],
-            'tags' => ['array'],
-            'featured_hosts' => ['array'],
-            'categories' => ['array'],
+            'spotify' => ['url', 'nullable'],
+            'google_podcast' => ['url', 'nullable'],
+            'apple_podcast' => ['url', 'nullable'],
+            'tags' => ['array', 'nullable'],
+            'featured_hosts' => ['array', 'nullable'],
+            'categories' => ['array', 'nullable'],
             'is_featured' => ['required', 'boolean'],
             'is_popular' => ['required', 'boolean'],
             'show_id' => ['required', 'exists:shows,id'],
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
+
         $episode = Episode::create($validatedData);
 
         if (sizeof($validatedData['categories']) > 0) {
@@ -73,19 +74,20 @@ class EpisodeController extends Controller
     // update the episode
     public function update(Request $request, $id) {
         $validatedData = $request->validateWithBag('createUpdateEpisode', [
-            'name' => ['required', 'min:2', 'max:50'],
+            'name' => ['required', 'min:2', 'max:255'],
             'description' => ['required', 'min:50', 'string'],
             'media_url' => ['required', 'url'],
-            'spotify' => ['url'],
-            'google_podcast' => ['url'],
-            'apple_podcast' => ['url'],
-            'tags' => ['array'],
-            'featured_hosts' => ['array'],
-            'categories' => ['array'],
+            'spotify' => ['url', 'nullable'],
+            'google_podcast' => ['url', 'nullable'],
+            'apple_podcast' => ['url', 'nullable'],
+            'tags' => ['array', 'nullable'],
+            'featured_hosts' => ['array', 'nullable'],
+            'categories' => ['array', 'nullable'],
             'is_featured' => ['required', 'boolean'],
             'is_popular' => ['required', 'boolean'],
             'show_id' => ['required', 'exists:shows,id'],
         ]);
+
         $episode = Episode::findOrFail($id);
         $episode->fill($validatedData)->save();
         if (sizeof($validatedData['categories']) > 0) {

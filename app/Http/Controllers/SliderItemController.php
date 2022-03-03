@@ -27,7 +27,7 @@ class SliderItemController extends Controller
     {
         $sliderItem = new SliderItem();
         $validatedData = $request->validateWithBag('createUpdateSliderItem', [
-            'title' => ['required', 'min:2', 'max:100'],
+            'title' => ['required', 'min:2', 'max:255'],
             'description' => ['required', 'min:50', 'string'],
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
@@ -65,7 +65,7 @@ class SliderItemController extends Controller
     {
         $sliderItem = SliderItem::findOrFail($id);
         $validatedData = $request->validateWithBag('createUpdateSliderItem', [
-            'title' => ['required', 'min:2', 'max:100'],
+            'title' => ['required', 'min:2', 'max:255'],
             'description' => ['required', 'min:50', 'string'],
             'photo' => ['mimes:jpg,jpeg,png', 'max:1024'],
         ]);

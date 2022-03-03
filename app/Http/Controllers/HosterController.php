@@ -44,7 +44,7 @@ class HosterController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validateWithBag('createUpdateHoster', [
-            'name' => ['required', 'min:2', 'max:50'],
+            'name' => ['required', 'min:2', 'max:255'],
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
             'email' => ['email', 'required', 'unique:hosters,email'],
             'contact_number' => ['required', 'digits:10', 'unique:hosters,contact_number'],
@@ -99,7 +99,7 @@ class HosterController extends Controller
     {
         $hoster = Hoster::findOrFail($id);
         $validatedData = $request->validateWithBag('createUpdateHoster', [
-            'name' => ['required', 'min:2', 'max:50'],
+            'name' => ['required', 'min:2', 'max:255'],
             'photo' => ['mimes:jpg,jpeg,png', 'max:1024'],
             'email' => ['email', 'required', Rule::unique('hosters')->ignore($hoster->id)],
             'contact_number' => ['required', 'digits:10', Rule::unique('hosters')->ignore($hoster->id)],

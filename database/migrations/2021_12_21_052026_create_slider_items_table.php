@@ -15,7 +15,7 @@ class CreateSliderItemsTable extends Migration
     {
         Schema::create('slider_items', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->text('title');
             $table->text('description');
             $table->integer('order_index')->default(0);
             $table->timestamps();

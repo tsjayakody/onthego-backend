@@ -15,8 +15,8 @@ class CreateShowsTable extends Migration
     {
         Schema::create('shows', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
+            $table->text('name');
+            $table->text('slug');
             $table->text('description');
             $table->foreignId('hoster_id')->constrained('hosters', 'id')->onDelete('cascade');
             $table->timestamps();

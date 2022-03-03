@@ -36,7 +36,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validateWithBag('createOrUpdateCategory', [
-            'name' => ['required', 'min:2', 'max:50'],
+            'name' => ['required', 'min:2', 'max:255'],
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
 
@@ -67,7 +67,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $validatedData = $request->validateWithBag('createOrUpdateCategory', [
-            'name' => ['required', 'min:2', 'max:50'],
+            'name' => ['required', 'min:2', 'max:255'],
             'photo' => ['mimes:jpg,jpeg,png', 'max:1024'],
         ]);
 

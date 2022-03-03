@@ -15,15 +15,15 @@ class CreateEpisodesTable extends Migration
     {
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
+            $table->text('name');
+            $table->text('slug');
             $table->text('description');
-            $table->string('media_url');
-            $table->string('tags')->nullable();
-            $table->string('spotify')->nullable();
-            $table->string('google_podcast')->nullable();
-            $table->string('apple_podcast')->nullable();
-            $table->string('featured_hosts')->nullable();
+            $table->text('media_url');
+            $table->text('tags')->nullable();
+            $table->text('spotify')->nullable();
+            $table->text('google_podcast')->nullable();
+            $table->text('apple_podcast')->nullable();
+            $table->text('featured_hosts')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_popular')->default(false);
             $table->foreignId('show_id')->constrained('shows', 'id')->onDelete('cascade');

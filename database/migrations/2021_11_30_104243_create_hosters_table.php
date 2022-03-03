@@ -15,18 +15,18 @@ class CreateHostersTable extends Migration
     {
         Schema::create('hosters', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->text('name');
             $table->text('description');
             $table->string('email', 200)->unique();
             $table->string('contact_number', 10)->unique();
-            $table->string('twitter')->nullable();
-            $table->string('linkedin')->nullable();
-            $table->string('facebook')->nullable();
-            $table->string('instagram')->nullable();
-            $table->string('youtube')->nullable();
-            $table->string('anchor')->nullable();
+            $table->text('twitter')->nullable();
+            $table->text('linkedin')->nullable();
+            $table->text('facebook')->nullable();
+            $table->text('instagram')->nullable();
+            $table->text('youtube')->nullable();
+            $table->text('anchor')->nullable();
             $table->text('past_works')->nullable();
-            $table->string('slug');
+            $table->text('slug');
             $table->string('designation');
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

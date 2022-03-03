@@ -45,7 +45,7 @@ class ShowController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validateWithBag('createUpdateShow', [
-            'name' => ['required', 'min:2', 'max:100'],
+            'name' => ['required', 'min:2', 'max:255'],
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
             'description' => ['required', 'min:50', 'string'],
             'hoster_id' => ['required', 'exists:hosters,id']
@@ -67,7 +67,7 @@ class ShowController extends Controller
         $show = Show::findOrFail($id);
 
         $validatedData = $request->validateWithBag('createUpdateShow', [
-            'name' => ['required', 'min:2', 'max:100'],
+            'name' => ['required', 'min:2', 'max:255'],
             'photo' => ['mimes:jpg,jpeg,png', 'max:1024'],
             'description' => ['required', 'min:50'],
             'hoster_id' => ['required', 'exists:hosters,id']
