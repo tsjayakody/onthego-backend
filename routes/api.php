@@ -46,7 +46,7 @@ Route::middleware(['throttle:api'])->prefix('public/v1/')->group(function () {
         Route::get('/{slug}', [App\Http\Controllers\api\public\CategoryController::class, 'getBySlug']);
     });
 
-    // public api routes for categories
+    // public api routes for episodes
     Route::prefix('episodes')->group(function () {
         Route::get('/', [App\Http\Controllers\api\public\EpisodeController::class, 'index']);
         Route::get('/popular', [App\Http\Controllers\api\public\EpisodeController::class, 'getPopularEpisodes']);
